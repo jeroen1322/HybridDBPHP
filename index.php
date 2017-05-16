@@ -9,18 +9,12 @@
 $json = '{
     "type": 0,
     "id": 1,
-    "header": 2,
+    "header": 1,
     "data": {
-        "database": "mysql_db_name",
-        "filters": [
-            {
-                "column": "mysql_column_to_add_to_WHERE",
-                "value": "value_to_match_to_column_in_WHERE"
-            }
-        ],
-        "jsontable": "json_table_name",
-        "jsonkey": "name_of_json_field_to_match",
-        "jsonvalue": "value_of_json_field_to_match"
+        "database": "HDBTest",
+        "jsontable": "userinformation",
+        "jsonkey": "id",
+        "jsonvalue": "3"
     }
 }';
 
@@ -63,6 +57,17 @@ if ($socket === false) {
            * @param string $json: The JSON message
            */
           if(socket_write($socket, $json)){
+
+            if(socket_recv($socket, $buff, 4, MSG_WAITALL)){
+              $result = unpack('N', $buff);
+              $result_size = $result[1];
+
+              if(socket_recv($socket, $received_data, $result_size, MSG_WAITALL)){
+                $data = $received_data;
+                $json_result = json_decode($data, true);
+                print_r($json_result);
+              }
+            }
             echo '<br>Writen successfully';
           }else{
             echo "socket_create() failed: reason: " . socket_strerror(socket_last_error()) . "\n";
