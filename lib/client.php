@@ -46,7 +46,7 @@ class HDB{
     /**
      * Get the size of the JSON bytearray
      * @param  string $json The JSON from which we need the size of
-     * @return string
+     * @return string $int_size: The length of the bytearray
      */
     function jsonToByte($json){
       $byteArray = unpack('C*', $json);
