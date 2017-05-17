@@ -4,10 +4,12 @@ class HDB{
   protected $ip;
   protected $port;
   protected $json;
+  protected $database;
 
-  public function __construct($ip, $port){
+  public function __construct($ip, $port, $database){
     $this->ip = $ip;
     $this->port = $port;
+    $this->database = $database;
     $this->socket = $this->create();
   }
 
@@ -30,13 +32,13 @@ class HDB{
    * @param  string $json The JSON that will be send to the database server
    * @return [type]
    */
-  public function select($database, $table, $key, $value){
+  public function select($table, $key, $value){
     $json = "{
       'type': 0,
       'id': 1,
       'header': 1,
       'data': {
-        'database': '$database',
+        'database': '$this->database',
         'jsontable': '$table',
         'jsonkey': '$key',
         'jsonvalue': '$value'
